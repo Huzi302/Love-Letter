@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>💌 My Love Letter</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Caveat:wght@400;600&family=Pacifico&family=Great+Vibes&family=Pinyon+Script&display=swap" rel="stylesheet"/>
+<style>
+
+/* ===== RESET ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Dancing Script', cursive;
+  background: #ffe4ec;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ===== FLOWERS ===== */
+.daisy {
+  position: fixed;
+  top: -60px;
+  pointer-events: none;
+  animation: fall linear infinite;
+  z-index: 0;
+  user-select: none;
+}
+@keyframes fall {
+  from { transform: translateY(0) rotate(0deg); opacity: 0.9; }
+  to   { transform: translateY(110vh) rotate(360deg); opacity: 0.1; }
+}
+
+/* ===== PAGES =====
+   We use a single-page approach.
+   Each "page" is a full-screen div.
+   Only one is visible at a time via JS.
+*/
+.page {
+  display: none;
+  min-height: 100vh;
+  width: 100%;
+  background: #ffe4ec;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== PAGE: HOME ===== */
+#page-home {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 24px;
+}
+
+.envelope-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: popIn 0.7s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+#envelope {
+  width: 260px;
+  height: 180px;
+  background: #fff5f8;
+  border: 2px solid #f48fb1;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 6px 24px #f48fb133;
+  transition: transform 0.15s;
+}
+#envelope:hover { transform: scale(1.03); }
+#envelope.shake { animation: shake 0.5s ease; }
+@keyframes shake {
+  0%,100% { transform: rotate(0deg); }
+  20%  { transform: rotate(-6deg); }
+  40%  { transform: rotate(6deg); }
+  60%  { transform: rotate(-4deg); }
+  80%  { transform: rotate(4deg); }
+}
+#env-svg { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; }
+
+#sticker {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px; height: 56px;
+  background: #e91e8c;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  border: 3px solid #fff;
+  box-shadow: 0 3px 10px #e91e8c55;
+  z-index: 2;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+#sticker.gone {
+  transform: translate(-50%, -120%) scale(0);
+  opacity: 0;
+}
+
+.btn-main {
+  padding: 13px 36px;
+  background: #e91e8c;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  font-size: 22px;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 5px 18px #e91e8c44;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-main:hover { background: #c2185b; transform: scale(1.04); }
+.btn-main:active { transform: scale(0.97); }
+
+/* ===== PAGE: LOCK ===== */
+#page-lock {
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.card {
+  background: #fffdf9;
+  border: 1.5px solid #f48fb1;
+  border-radius: 18px;
+  padding: 36px 28px;
+  max-width: 340px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 6px 30px #f4669222;
+  animation: popIn 0.4s ease;
+}
+
+.card-icon { font-size: 48px; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+
+.card h3 {
+  font-family: 'Pacifico', cursive;
+  font-size: 20px;
+  color: #c2185b;
+  text-align: center;
+}
+.card p {
+  font-family: 'Dancing Script', cursive;
+  font-size: 19px;
+  color: #c2185b;
+  text-align: center;
+  line-height: 1.5;
+}
+.card input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #f48fb1;
+  border-radius: 10px;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 10px;
+  color: #4a2040;
+  background: #fff5f8;
+  outline: none;
+  font-family: 'Caveat', cursive;
+}
+.card input:focus { border-color: #e91e8c; }
+
+.err { font-family: 'Caveat', cursive; font-size: 16px; color: #e91e8c; min-height: 20px; text-align: center; }
+
+.btn-pink {
+  width: 100%;
+  padding: 12px;
+  background: #e91e8c;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 20px;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-pink:hover { background: #c2185b; }
+
+.btn-ghost {
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  color: #e91e8c;
+  border: 1.5px solid #f48fb1;
+  border-radius: 24px;
+  font-size: 18px;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-ghost:hover { background: #fce4ec; }
+
+/* ===== PAGE: LETTER ===== */
+#page-letter {
+  padding: 0;
+}
+
+#letter-scroll-area {
+  width: 100%;
+  padding: 20px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#receiver-banner {
+  font-family: 'Pacifico', cursive;
+  font-size: 18px;
+  color: #e91e8c;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+#letter-paper {
+  background: #fffdf9;
+  border: 1.5px solid #f8bbd0;
+  border-radius: 12px;
+  padding: 26px 26px 22px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  box-shadow: 0 4px 24px #f0629222;
+  background-image: repeating-linear-gradient(
+    transparent, transparent 31px, #fce4ec 31px, #fce4ec 32px
+  );
+  background-position: 0 36px;
+}
+#letter-paper::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50px; bottom: 0;
+  width: 1.5px;
+  background: #ffb3c6;
+  pointer-events: none;
+}
+#letter-date {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: #e91e8c;
+  text-align: right;
+  margin-bottom: 10px;
+}
+#letter-body {
+  font-family: 'Dancing Script', cursive;
+  font-size: 20px;
+  line-height: 2.05;
+  color: #4a2040;
+  padding-left: 8px;
+  word-wrap: break-word;
+  min-height: 80px;
+  white-space: pre-wrap;
+}
+#letter-sig {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px dashed #f8bbd0;
+  text-align: right;
+}
+
+/* sig font classes */
+.sf0 { font-family: 'Great Vibes',    cursive; font-size: 36px; color: #c2185b; }
+.sf1 { font-family: 'Pinyon Script',  cursive; font-size: 36px; color: #c2185b; }
+.sf2 { font-family: 'Pacifico',       cursive; font-size: 26px; color: #c2185b; }
+.sf3 { font-family: 'Dancing Script', cursive; font-size: 32px; font-weight:700; color: #c2185b; }
+
+/* letter action bar — sticky bottom */
+#letter-bar {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background: #ffe4ec;
+  border-top: 1px solid #f8bbd0;
+  padding: 10px 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  z-index: 10;
+}
+#letter-bar button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1.5px solid #f48fb1;
+  background: #fff;
+  color: #e91e8c;
+  font-size: 16px;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 5px;
+  transition: background 0.2s;
+}
+#letter-bar button:hover { background: #fce4ec; }
+#letter-bar button.bpink { background: #e91e8c; color: #fff; border-color: #e91e8c; }
+#letter-bar button.bpink:hover { background: #c2185b; }
+#letter-bar button.bgreen { background: #25D366; color: #fff; border-color: #25D366; }
+#letter-bar button.bgreen:hover { background: #1ebe5d; }
+
+.readonly-tag {
+  font-family: 'Caveat', cursive;
+  font-size: 14px;
+  color: #c2185b;
+  background: #fce4ec;
+  border: 1.5px solid #f48fb1;
+  border-radius: 16px;
+  padding: 6px 14px;
+}
+
+/* ===== PAGE: EDIT ===== */
+#page-edit {
+  padding: 0;
+}
+
+#edit-top {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #ffe4ec;
+  border-bottom: 1px solid #f8bbd0;
+  padding: 12px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+}
+#edit-top h2 {
+  font-family: 'Pacifico', cursive;
+  font-size: 20px;
+  color: #c2185b;
+  text-align: center;
+}
+
+.field-hint { font-family: 'Caveat', cursive; font-size: 13px; color: #c2185b; }
+
+.pill-input {
+  width: 100%;
+  padding: 8px 14px;
+  border: 1.5px solid #f48fb1;
+  border-radius: 24px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 17px;
+  color: #4a2040;
+  background: #fffdf9;
+  outline: none;
+  text-align: center;
+}
+.pill-input:focus { border-color: #e91e8c; }
+.pill-input::placeholder { color: #f4a4c0; }
+
+/* toolbar */
+#toolbar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tb {
+  padding: 5px 10px;
+  border: 1.5px solid #f48fb1;
+  border-radius: 8px;
+  background: #fff;
+  color: #e91e8c;
+  font-family: 'Dancing Script', cursive;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 32px;
+  text-align: center;
+}
+.tb:hover { background: #fce4ec; }
+.tb.on { background: #e91e8c; color: #fff; }
+
+/* emoji */
+#emoji-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.ej {
+  font-size: 20px;
+  cursor: pointer;
+  padding: 2px 3px;
+  border: none;
+  background: transparent;
+  transition: transform 0.1s;
+  line-height: 1;
+}
+.ej:hover { transform: scale(1.35); }
+
+#edit-body {
+  width: 100%;
+  padding: 14px;
+}
+
+#edit-area {
+  width: 100%;
+  min-height: 220px;
+  border: 1.5px solid #f48fb1;
+  border-radius: 12px;
+  padding: 14px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 19px;
+  color: #4a2040;
+  background: #fffdf9;
+  outline: none;
+  line-height: 2.0;
+  word-wrap: break-word;
+}
+#edit-area:focus { border-color: #e91e8c; }
+
+/* signature section */
+.section-box {
+  background: #fff5f8;
+  border: 1.5px solid #f8bbd0;
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.section-box h4 {
+  font-family: 'Pacifico', cursive;
+  font-size: 16px;
+  color: #c2185b;
+}
+.section-box input {
+  width: 100%;
+  padding: 9px 14px;
+  border: 1.5px solid #f48fb1;
+  border-radius: 10px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 18px;
+  color: #4a2040;
+  background: #fffdf9;
+  outline: none;
+}
+.section-box input:focus { border-color: #e91e8c; }
+.section-box input::placeholder { color: #f4a4c0; }
+
+.font-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+.font-opt {
+  padding: 6px 14px;
+  border: 1.5px solid #f48fb1;
+  border-radius: 20px;
+  background: #fff;
+  color: #c2185b;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.font-opt.sel { background: #e91e8c; color: #fff; border-color: #e91e8c; }
+
+.preview-box {
+  background: #fffdf9;
+  border: 1.5px dashed #f48fb1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: right;
+  min-height: 55px;
+}
+
+/* password section */
+.pw-row { display: flex; gap: 8px; align-items: center; }
+.pw-row input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid #f48fb1;
+  border-radius: 8px;
+  font-size: 18px;
+  color: #4a2040;
+  background: #fffdf9;
+  outline: none;
+  font-family: 'Caveat', cursive;
+  letter-spacing: 5px;
+  text-align: center;
+}
+.pw-row input:focus { border-color: #e91e8c; }
+.show-btn {
+  padding: 8px 12px;
+  border: 1.5px solid #f48fb1;
+  border-radius: 8px;
+  background: #fff;
+  color: #e91e8c;
+  font-size: 13px;
+  font-family: 'Caveat', cursive;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pw-hint { font-family: 'Caveat', cursive; font-size: 13px; color: #b06080; }
+.pw-ok { font-family: 'Caveat', cursive; font-size: 14px; color: #2a9060; display: none; }
+.pw-save-btn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 18px;
+  background: #e91e8c;
+  color: #fff;
+  font-family: 'Dancing Script', cursive;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.pw-save-btn:hover { background: #c2185b; }
+
+#edit-bottom {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background: #ffe4ec;
+  border-top: 1px solid #f8bbd0;
+  padding: 10px 14px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  z-index: 10;
+}
+#edit-bottom button {
+  padding: 10px 28px;
+  border-radius: 24px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid #f48fb1;
+  background: #fff;
+  color: #e91e8c;
+  transition: background 0.2s;
+}
+#edit-bottom button:hover { background: #fce4ec; }
+#edit-bottom button.bpink { background: #e91e8c; color: #fff; border-color: #e91e8c; }
+#edit-bottom button.bpink:hover { background: #c2185b; }
+
+/* ===== SHARE MODAL ===== */
+#share-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,228,236,0.95);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#share-modal.open { display: flex; }
+
+.share-card {
+  background: #fffdf9;
+  border: 1.5px solid #f48fb1;
+  border-radius: 18px;
+  padding: 26px 22px;
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 6px 30px #f4669222;
+  animation: popIn 0.35s ease;
+}
+.share-card h3 { font-family: 'Pacifico', cursive; font-size: 21px; color: #c2185b; }
+.share-card p  { font-family: 'Dancing Script', cursive; font-size: 16px; color: #7a4060; text-align: center; line-height: 1.5; }
+.url-box {
+  width: 100%;
+  background: #fff5f8;
+  border: 1.5px solid #f48fb1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: 'Caveat', cursive;
+  font-size: 12px;
+  color: #4a2040;
+  word-break: break-all;
+  text-align: center;
+  line-height: 1.6;
+  max-height: 75px;
+  overflow-y: auto;
+}
+.share-btns { display: flex; flex-direction: column; gap: 9px; width: 100%; }
+.share-btns button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 24px;
+  border: none;
+  font-family: 'Dancing Script', cursive;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.swa  { background: #25D366; color: #fff; }
+.swa:hover { background: #1da851; }
+.scp  { background: #e91e8c; color: #fff; }
+.scp:hover { background: #c2185b; }
+.scl  { background: #fff; color: #e91e8c; border: 1.5px solid #f48fb1 !important; }
+.scl:hover { background: #fce4ec; }
+
+/* ===== HEARTS ===== */
+.heart {
+  position: fixed;
+  pointer-events: none;
+  animation: rise 1.3s ease-out forwards;
+  z-index: 999;
+}
+@keyframes rise {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-130px) scale(0.3); }
+}
+
+/* ===== TOAST ===== */
+#toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #4a2040;
+  color: #fff;
+  padding: 10px 26px;
+  border-radius: 24px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 17px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 9999;
+  white-space: nowrap;
+}
+#toast.show { opacity: 1; }
+
+@media (max-width: 430px) {
+  #letter-body { font-size: 18px; }
+  #envelope    { width: 220px; height: 155px; }
+}
+</style>
+</head>
+<body>
+
+<!-- FLOWERS -->
+<div id="flower-container"></div>
+
+<!-- ===== PAGE: HOME ===== -->
+<div class="page" id="page-home">
+  <div class="envelope-wrap">
+    <div id="envelope" onclick="tapEnvelope()" tabindex="0">
+      <svg id="env-svg" viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="0,0 130,95 260,0" fill="#fce4ec" stroke="#f48fb1" stroke-width="1.5"/>
+        <line x1="0"   y1="0"   x2="0"   y2="180" stroke="#f48fb1" stroke-width="1"/>
+        <line x1="260" y1="0"   x2="260" y2="180" stroke="#f48fb1" stroke-width="1"/>
+        <line x1="0"   y1="180" x2="260" y2="180" stroke="#f48fb1" stroke-width="1"/>
+        <polyline points="0,180 130,105 260,180" fill="#ffe0eb" stroke="#f48fb1" stroke-width="1"/>
+        <circle cx="20"  cy="20"  r="3" fill="#f48fb1" opacity="0.5"/>
+        <circle cx="240" cy="20"  r="3" fill="#f48fb1" opacity="0.5"/>
+        <circle cx="20"  cy="160" r="3" fill="#f48fb1" opacity="0.5"/>
+        <circle cx="240" cy="160" r="3" fill="#f48fb1" opacity="0.5"/>
+      </svg>
+      <div id="sticker">💖</div>
+    </div>
+    <button class="btn-main" onclick="goToLock()">Open this letter 💌</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: LOCK ===== -->
+<div class="page" id="page-lock">
+  <div class="card">
+    <div class="card-icon">🔐</div>
+    <p>This letter is protected.<br>Enter the secret code to read it.</p>
+    <input type="password" id="lock-input" maxlength="6" placeholder="· · · ·"
+           autocomplete="off" autocorrect="off" autocapitalize="off"/>
+    <div class="err" id="lock-err"></div>
+    <button class="btn-pink" onclick="submitCode()">Open 💌</button>
+    <button class="btn-ghost" onclick="showPage('page-home')">← Back</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: LETTER ===== -->
+<div class="page" id="page-letter">
+  <div id="letter-scroll-area">
+    <div id="receiver-banner"></div>
+    <div id="letter-paper">
+      <div id="letter-date"></div>
+      <div id="letter-body"></div>
+      <div id="letter-sig"></div>
+    </div>
+  </div>
+  <div id="letter-bar">
+    <!-- buttons added by JS -->
+  </div>
+</div>
+
+<!-- ===== PAGE: EDIT ===== -->
+<div class="page" id="page-edit">
+
+  <div id="edit-top">
+    <h2>✍️ Write Today's Letter</h2>
+    <div class="field-hint">💕 Recipient's name:</div>
+    <input class="pill-input" type="text" id="recv-name" maxlength="40"
+           placeholder="e.g. My Love, Sarah, Jaan..."/>
+    <div id="toolbar">
+      <button class="tb" id="tb-b" onclick="fmt('bold')"><b>B</b></button>
+      <button class="tb" id="tb-i" onclick="fmt('italic')"><i>I</i></button>
+      <button class="tb" id="tb-u" onclick="fmt('underline')"><u>U</u></button>
+      <button class="tb" onclick="fmt('justifyLeft')">⬅</button>
+      <button class="tb" onclick="fmt('justifyCenter')">☰</button>
+      <button class="tb" onclick="fmt('justifyRight')">➡</button>
+    </div>
+    <div id="emoji-bar"></div>
+  </div>
+
+  <div id="edit-body">
+
+    <div id="edit-area" contenteditable="true" spellcheck="false"></div>
+
+    <!-- SIGNATURE -->
+    <div class="section-box">
+      <h4>✍️ Your Signature</h4>
+      <div class="field-hint">Type your name — it becomes your signature:</div>
+      <input type="text" id="sig-name" maxlength="30" placeholder="e.g. Zara, Your Love..."/>
+      <div class="field-hint">Choose style:</div>
+      <div class="font-picker">
+        <div class="font-opt sel" data-f="0" onclick="pickFont(0)" style="font-family:'Great Vibes',cursive;font-size:17px;">Great Vibes</div>
+        <div class="font-opt"     data-f="1" onclick="pickFont(1)" style="font-family:'Pinyon Script',cursive;font-size:17px;">Pinyon</div>
+        <div class="font-opt"     data-f="2" onclick="pickFont(2)" style="font-family:'Pacifico',cursive;font-size:14px;">Pacifico</div>
+        <div class="font-opt"     data-f="3" onclick="pickFont(3)" style="font-family:'Dancing Script',cursive;font-size:15px;font-weight:700;">Dancing</div>
+      </div>
+      <div class="field-hint">Preview:</div>
+      <div class="preview-box"><span id="sig-preview" class="sf0">Your Name</span></div>
+    </div>
+
+    <!-- PASSWORDS -->
+    <div class="section-box">
+      <h4>🔐 Passwords</h4>
+
+      <div class="field-hint">Reader Code (what your loved one enters):</div>
+      <div class="pw-row">
+        <input type="password" id="rcode-input" maxlength="6" placeholder="new code" autocomplete="off"/>
+        <button class="show-btn" onclick="toggleShow('rcode-input', this)">Show</button>
+      </div>
+      <div class="pw-hint">Leave blank to keep current. Min 4 digits.</div>
+      <button class="pw-save-btn" onclick="saveRCode()">Update Reader Code ✅</button>
+      <div class="pw-ok" id="rcode-ok">✅ Reader code updated!</div>
+
+      <div class="field-hint" style="margin-top:8px;">Author Password (only you):</div>
+      <div class="pw-row">
+        <input type="password" id="apw-input" maxlength="6" placeholder="new password" autocomplete="off"/>
+        <button class="show-btn" onclick="toggleShow('apw-input', this)">Show</button>
+      </div>
+      <div class="pw-hint">Leave blank to keep current. Min 4 digits.</div>
+      <button class="pw-save-btn" onclick="saveAPW()">Update Author Password ✅</button>
+      <div class="pw-ok" id="apw-ok">✅ Author password updated!</div>
+    </div>
+
+    <div style="height:30px;"></div>
+  </div>
+
+  <div id="edit-bottom">
+    <button onclick="cancelEdit()">Cancel</button>
+    <button class="bpink" onclick="saveLetter()">Save Letter 💾</button>
+  </div>
+</div>
+
+<!-- ===== AUTHOR LOGIN MODAL ===== -->
+<div id="author-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,228,236,0.95);z-index:100;align-items:center;justify-content:center;padding:20px;">
+  <div class="card">
+    <div class="card-icon">✍️</div>
+    <h3>Author Login</h3>
+    <p>Enter your author password to edit this letter.</p>
+    <input type="password" id="auth-input" maxlength="6" placeholder="· · · ·" autocomplete="off"/>
+    <div class="err" id="auth-err"></div>
+    <button class="btn-pink" onclick="submitAuth()">Login 🔓</button>
+    <button class="btn-ghost" onclick="closeModal('author-modal')">Cancel</button>
+  </div>
+</div>
+
+<!-- ===== SHARE MODAL ===== -->
+<div id="share-modal">
+  <div class="share-card">
+    <h3>Share Your Letter 💌</h3>
+    <p>Send via WhatsApp — your loved one taps the link and the letter opens!</p>
+    <div class="url-box" id="share-url-text"></div>
+    <div class="share-btns">
+      <button class="swa" onclick="doWhatsApp()">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="white">
+          <path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.672 4.824 1.845 6.83L2 30l7.374-1.82A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm6.29 19.883c-.344-.172-2.036-1.004-2.352-1.118-.316-.115-.546-.172-.776.172-.23.344-.891 1.118-1.092 1.348-.2.23-.402.258-.746.086-.344-.172-1.453-.535-2.767-1.707-1.023-.913-1.713-2.04-1.914-2.384-.2-.344-.021-.53.15-.701.154-.154.344-.402.516-.603.172-.2.23-.344.344-.573.115-.23.058-.43-.029-.603-.086-.172-.776-1.87-1.063-2.56-.28-.672-.563-.58-.776-.59-.2-.01-.43-.012-.66-.012-.23 0-.603.086-.919.43-.316.344-1.207 1.18-1.207 2.877s1.236 3.338 1.408 3.568c.172.23 2.43 3.71 5.888 5.202.823.355 1.465.567 1.966.726.826.263 1.578.226 2.172.137.663-.099 2.036-.832 2.323-1.636.287-.803.287-1.491.2-1.635-.086-.144-.316-.23-.66-.402z"/>
+        </svg>
+        Open in WhatsApp
+      </button>
+      <button class="scp" onclick="copyURL()">📋 Copy Link</button>
+      <button class="scl" onclick="closeModal('share-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   STORAGE
+============================================================ */
+var KEYS = { letter:'ll_text_v7', rcode:'ll_rc_v7', apw:'ll_ap_v7', name:'ll_nm_v7', sig:'ll_sg_v7', sfont:'ll_sf_v7' };
+
+var state = {
+  letter  : localStorage.getItem(KEYS.letter) || 'My dearest,\n\nEvery single day I find a new reason to smile because of you.\n\nYou are my favourite person in the whole world.',
+  rcode   : localStorage.getItem(KEYS.rcode)  || '1234',
+  apw     : localStorage.getItem(KEYS.apw)    || '0000',
+  name    : localStorage.getItem(KEYS.name)   || '',
+  sig     : localStorage.getItem(KEYS.sig)    || '',
+  sfont   : parseInt(localStorage.getItem(KEYS.sfont) || '0'),
+  isReceiver   : false,
+  authorLogged : false,
+  shareURL     : ''
+};
+
+/* ============================================================
+   READ SHARED LETTER FROM URL HASH
+   This runs BEFORE anything else so state is ready.
+============================================================ */
+(function() {
+  try {
+    var hash = window.location.hash;
+    if (!hash || hash.length < 6) return;
+    hash = hash.slice(1); // remove #
+    var json = decodeURIComponent(escape(atob(hash)));
+    var obj  = JSON.parse(json);
+    if (obj.letter) { state.letter = obj.letter; }
+    if (obj.name)   { state.name   = obj.name;   }
+    if (obj.sig)    { state.sig    = obj.sig;     }
+    if (typeof obj.sfont !== 'undefined') { state.sfont = Number(obj.sfont); }
+    state.isReceiver = true;
+  } catch(e) {
+    state.isReceiver = false;
+  }
+}());
+
+/* ============================================================
+   PAGE NAVIGATION — the ONLY way to switch screens
+   Uses display style directly for maximum browser compatibility
+============================================================ */
+var PAGES = ['page-home','page-lock','page-letter','page-edit'];
+
+function showPage(id) {
+  PAGES.forEach(function(pid) {
+    var el = document.getElementById(pid);
+    el.style.display = (pid === id) ? 'flex' : 'none';
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ============================================================
+   SOUNDS
+============================================================ */
+var audioCtx = null;
+function getAC() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    try { audioCtx.resume(); } catch(e) {}
+  }
+  return audioCtx;
+}
+
+function playPop(freq, dur) {
+  freq = freq || 500; dur = dur || 0.18;
+  var ac = getAC(); if (!ac) return;
+  var o = ac.createOscillator(), g = ac.createGain();
+  o.connect(g); g.connect(ac.destination);
+  o.type = 'sine';
+  o.frequency.setValueAtTime(freq, ac.currentTime);
+  o.frequency.exponentialRampToValueAtTime(freq * 0.4, ac.currentTime + dur);
+  g.gain.setValueAtTime(0.3, ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+  o.start(); o.stop(ac.currentTime + dur);
+}
+
+function playDing() {
+  var ac = getAC(); if (!ac) return;
+  [523, 659, 784].forEach(function(f, i) {
+    var o = ac.createOscillator(), g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.type = 'sine'; o.frequency.value = f;
+    var t = ac.currentTime + i * 0.13;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.25, t + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+    o.start(t); o.stop(t + 0.55);
+  });
+}
+
+function playBuzz() {
+  var ac = getAC(); if (!ac) return;
+  var o = ac.createOscillator(), g = ac.createGain();
+  o.connect(g); g.connect(ac.destination);
+  o.type = 'sawtooth'; o.frequency.value = 120;
+  g.gain.setValueAtTime(0.2, ac.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.3);
+  o.start(); o.stop(ac.currentTime + 0.3);
+}
+
+function playSparkle() {
+  var ac = getAC(); if (!ac) return;
+  [700, 900, 1100, 1400].forEach(function(f, i) {
+    var o = ac.createOscillator(), g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.type = 'triangle'; o.frequency.value = f;
+    var t = ac.currentTime + i * 0.07;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.15, t + 0.04);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+    o.start(t); o.stop(t + 0.25);
+  });
+}
+
+/* ============================================================
+   HEARTS
+============================================================ */
+function spawnHearts(cx, cy) {
+  var emojis = ['❤️','🩷','💕','💖'];
+  for (var i = 0; i < 9; i++) {
+    (function() {
+      var h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      h.style.left   = (cx + (Math.random() - 0.5) * 120) + 'px';
+      h.style.top    = (cy + (Math.random() - 0.5) * 50)  + 'px';
+      h.style.fontSize = (12 + Math.random() * 14) + 'px';
+      h.style.animationDelay = (Math.random() * 0.4) + 's';
+      document.body.appendChild(h);
+      setTimeout(function() { if (h.parentNode) h.parentNode.removeChild(h); }, 1600);
+    }());
+  }
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2800);
+}
+
+/* ============================================================
+   FLOWERS
+============================================================ */
+var FLOWERS = ['🌼','🌸','🌺','💐','🌷','🌻'];
+var fc = document.getElementById('flower-container');
+for (var fi = 0; fi < 20; fi++) {
+  (function() {
+    var d = document.createElement('div');
+    d.className = 'daisy';
+    d.textContent = FLOWERS[Math.floor(Math.random() * FLOWERS.length)];
+    d.style.left = (Math.random() * 95) + '%';
+    d.style.fontSize = (14 + Math.random() * 12) + 'px';
+    d.style.animationDuration  = (4 + Math.random() * 6) + 's';
+    d.style.animationDelay     = (Math.random() * 8) + 's';
+    fc.appendChild(d);
+  }());
+}
+
+/* ============================================================
+   ENVELOPE
+============================================================ */
+function tapEnvelope() {
+  playPop();
+  var env = document.getElementById('envelope');
+  env.classList.remove('shake');
+  void env.offsetWidth;
+  env.classList.add('shake');
+  var r = env.getBoundingClientRect();
+  setTimeout(function() {
+    spawnHearts(r.left + r.width / 2, r.top + r.height / 2);
+    playSparkle();
+  }, 100);
+}
+document.getElementById('envelope').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') tapEnvelope();
+});
+
+/* ============================================================
+   LOCK SCREEN
+============================================================ */
+function goToLock() {
+  playPop(400, 0.15);
+  document.getElementById('lock-input').value = '';
+  document.getElementById('lock-err').textContent = '';
+  showPage('page-lock');
+  setTimeout(function() { document.getElementById('lock-input').focus(); }, 200);
+}
+
+function submitCode() {
+  var val = document.getElementById('lock-input').value.trim();
+  if (val === state.rcode) {
+    playDing();
+    openLetter();
+  } else {
+    playBuzz();
+    document.getElementById('lock-err').textContent = 'Wrong code — try again 💔';
+    document.getElementById('lock-input').value = '';
+  }
+}
+
+document.getElementById('lock-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitCode();
+});
+
+/* ============================================================
+   OPEN LETTER — called after correct password
+============================================================ */
+function openLetter() {
+
+  /* ---- receiver banner ---- */
+  var banner = document.getElementById('receiver-banner');
+  if (state.name) {
+    banner.textContent = '💌 For ' + state.name + ' 💌';
+    banner.style.display = 'block';
+  } else {
+    banner.style.display = 'none';
+  }
+
+  /* ---- date ---- */
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now = new Date();
+  document.getElementById('letter-date').textContent =
+    now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+
+  /* ---- body — plain text, safe ---- */
+  var bodyEl = document.getElementById('letter-body');
+  bodyEl.textContent = ''; // clear first
+  bodyEl.textContent = state.letter; // set as plain text — always safe
+
+  /* ---- signature ---- */
+  var sigEl = document.getElementById('letter-sig');
+  sigEl.textContent = '';
+  if (state.sig) {
+    var span = document.createElement('span');
+    span.className = 'sf' + state.sfont;
+    span.textContent = state.sig;
+    sigEl.appendChild(span);
+  } else {
+    var def = document.createElement('span');
+    def.className = 'sf2';
+    def.textContent = '— With love 💌';
+    sigEl.appendChild(def);
+  }
+
+  /* ---- action bar ---- */
+  var bar = document.getElementById('letter-bar');
+  bar.innerHTML = '';
+
+  if (!state.isReceiver) {
+    /* author sees Edit + Share + Close */
+    var eb = document.createElement('button');
+    eb.textContent = '✏️ Edit';
+    eb.onclick = requestEdit;
+    bar.appendChild(eb);
+
+    var sb = document.createElement('button');
+    sb.className = 'bgreen';
+    sb.innerHTML = '<svg width="16" height="16" viewBox="0 0 32 32" fill="white"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.492.672 4.824 1.845 6.83L2 30l7.374-1.82A13.94 13.94 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm6.29 19.883c-.344-.172-2.036-1.004-2.352-1.118-.316-.115-.546-.172-.776.172-.23.344-.891 1.118-1.092 1.348-.2.23-.402.258-.746.086-.344-.172-1.453-.535-2.767-1.707-1.023-.913-1.713-2.04-1.914-2.384-.2-.344-.021-.53.15-.701.154-.154.344-.402.516-.603.172-.2.23-.344.344-.573.115-.23.058-.43-.029-.603-.086-.172-.776-1.87-1.063-2.56-.28-.672-.563-.58-.776-.59-.2-.01-.43-.012-.66-.012-.23 0-.603.086-.919.43-.316.344-1.207 1.18-1.207 2.877s1.236 3.338 1.408 3.568c.172.23 2.43 3.71 5.888 5.202.823.355 1.465.567 1.966.726.826.263 1.578.226 2.172.137.663-.099 2.036-.832 2.323-1.636.287-.803.287-1.491.2-1.635-.086-.144-.316-.23-.66-.402z"/></svg> WhatsApp';
+    sb.onclick = openShare;
+    bar.appendChild(sb);
+  } else {
+    /* receiver sees read-only tag */
+    var tag = document.createElement('span');
+    tag.className = 'readonly-tag';
+    tag.textContent = '👁️ Read only';
+    bar.appendChild(tag);
+  }
+
+  var cb = document.createElement('button');
+  cb.className = 'bpink';
+  cb.textContent = '✉️ Close';
+  cb.onclick = function() {
+    playPop(350, 0.12);
+    document.getElementById('sticker').classList.remove('gone');
+    showPage('page-home');
+  };
+  bar.appendChild(cb);
+
+  /* ---- show the letter page ---- */
+  document.getElementById('sticker').classList.add('gone');
+  var env = document.getElementById('envelope');
+  var r   = env.getBoundingClientRect();
+  spawnHearts(r.left + r.width / 2, r.top + r.height / 2);
+  playSparkle();
+
+  showPage('page-letter');
+}
+
+/* ============================================================
+   AUTHOR LOGIN
+============================================================ */
+function requestEdit() {
+  if (state.authorLogged) { openEdit(); return; }
+  playPop(480, 0.14);
+  document.getElementById('auth-input').value = '';
+  document.getElementById('auth-err').textContent = '';
+  openModal('author-modal');
+  setTimeout(function() { document.getElementById('auth-input').focus(); }, 200);
+}
+
+function submitAuth() {
+  var val = document.getElementById('auth-input').value.trim();
+  if (val === state.apw) {
+    playDing();
+    state.authorLogged = true;
+    closeModal('author-modal');
+    openEdit();
+  } else {
+    playBuzz();
+    document.getElementById('auth-err').textContent = 'Wrong password 🔒';
+    document.getElementById('auth-input').value = '';
+  }
+}
+
+document.getElementById('auth-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') submitAuth();
+});
+
+/* ============================================================
+   EDIT PAGE
+============================================================ */
+function openEdit() {
+  document.getElementById('recv-name').value   = state.name;
+  document.getElementById('edit-area').innerHTML = state.letter.replace(/\n/g, '<br>');
+  document.getElementById('sig-name').value    = state.sig;
+  document.getElementById('rcode-input').value  = '';
+  document.getElementById('apw-input').value    = '';
+  document.getElementById('rcode-ok').style.display = 'none';
+  document.getElementById('apw-ok').style.display   = 'none';
+  updateSigPreview();
+  pickFont(state.sfont, false);
+  showPage('page-edit');
+}
+
+function cancelEdit() {
+  playPop(350, 0.12);
+  showPage('page-letter');
+}
+
+function saveLetter() {
+  /* get plain text from contenteditable */
+  var area = document.getElementById('edit-area');
+  var raw  = area.innerText || area.textContent || '';
+  raw = raw.trim();
+  if (raw) {
+    state.letter = raw;
+    localStorage.setItem(KEYS.letter, raw);
+  }
+  var n = document.getElementById('recv-name').value.trim();
+  state.name = n;
+  localStorage.setItem(KEYS.name, n);
+
+  var s = document.getElementById('sig-name').value.trim();
+  state.sig = s;
+  localStorage.setItem(KEYS.sig, s);
+  localStorage.setItem(KEYS.sfont, state.sfont);
+
+  playDing();
+  toast('Letter saved! 💾');
+  openLetter();
+  showPage('page-letter');
+}
+
+/* ============================================================
+   SIGNATURE FONT PICKER
+============================================================ */
+var SFONT_CLASS = ['sf0','sf1','sf2','sf3'];
+var SFONT_SIZE  = ['36px','36px','26px','32px'];
+
+function pickFont(idx, save) {
+  if (save === undefined) save = true;
+  state.sfont = idx;
+  if (save) localStorage.setItem(KEYS.sfont, idx);
+  document.querySelectorAll('.font-opt').forEach(function(el) {
+    el.classList.toggle('sel', parseInt(el.getAttribute('data-f')) === idx);
+  });
+  updateSigPreview();
+}
+
+function updateSigPreview() {
+  var name = document.getElementById('sig-name').value || 'Your Name';
+  var prev = document.getElementById('sig-preview');
+  prev.className = SFONT_CLASS[state.sfont];
+  prev.style.fontSize = SFONT_SIZE[state.sfont];
+  prev.textContent = name;
+}
+
+document.getElementById('sig-name').addEventListener('input', updateSigPreview);
+
+/* ============================================================
+   TOOLBAR + EMOJI
+============================================================ */
+function fmt(cmd) {
+  document.getElementById('edit-area').focus();
+  document.execCommand(cmd, false, null);
+  updateToolbar();
+}
+function updateToolbar() {
+  document.getElementById('tb-b').classList.toggle('on', document.queryCommandState('bold'));
+  document.getElementById('tb-i').classList.toggle('on', document.queryCommandState('italic'));
+  document.getElementById('tb-u').classList.toggle('on', document.queryCommandState('underline'));
+}
+document.getElementById('edit-area').addEventListener('keyup',   updateToolbar);
+document.getElementById('edit-area').addEventListener('mouseup', updateToolbar);
+
+var EMOJIS = ['❤️','🩷','💕','💖','💗','💓','💝','😍','🥰','😘','💋','🌹','🌸','🌺','💐','✨','🌟','💫','🦋','🎀','💌','🍓','🌙','☀️','🥺','😊','😇','🤗','💑','👫'];
+var ebar = document.getElementById('emoji-bar');
+EMOJIS.forEach(function(em) {
+  var b = document.createElement('button');
+  b.className = 'ej';
+  b.textContent = em;
+  b.type = 'button';
+  b.addEventListener('click', function() {
+    var area = document.getElementById('edit-area');
+    area.focus();
+    document.execCommand('insertText', false, em);
+  });
+  ebar.appendChild(b);
+});
+
+/* ============================================================
+   PASSWORDS
+============================================================ */
+function toggleShow(id, btn) {
+  var el = document.getElementById(id);
+  if (el.type === 'password') { el.type = 'text'; btn.textContent = 'Hide'; }
+  else                        { el.type = 'password'; btn.textContent = 'Show'; }
+}
+
+function saveRCode() {
+  var v = document.getElementById('rcode-input').value.trim();
+  if (!v || v.length < 4) { toast('Enter at least 4 digits'); return; }
+  state.rcode = v;
+  localStorage.setItem(KEYS.rcode, v);
+  document.getElementById('rcode-input').value = '';
+  document.getElementById('rcode-ok').style.display = 'block';
+  playDing(); toast('Reader code updated! ✅');
+  setTimeout(function() { document.getElementById('rcode-ok').style.display = 'none'; }, 3000);
+}
+
+function saveAPW() {
+  var v = document.getElementById('apw-input').value.trim();
+  if (!v || v.length < 4) { toast('Enter at least 4 digits'); return; }
+  state.apw = v;
+  localStorage.setItem(KEYS.apw, v);
+  state.authorLogged = true;
+  document.getElementById('apw-input').value = '';
+  document.getElementById('apw-ok').style.display = 'block';
+  playDing(); toast('Author password updated! ✅');
+  setTimeout(function() { document.getElementById('apw-ok').style.display = 'none'; }, 3000);
+}
+
+/* ============================================================
+   SHARE
+============================================================ */
+function buildShareURL() {
+  var base    = window.location.origin + window.location.pathname;
+  var payload = JSON.stringify({
+    letter : state.letter,
+    name   : state.name,
+    sig    : state.sig,
+    sfont  : state.sfont
+  });
+  var encoded = btoa(unescape(encodeURIComponent(payload)));
+  return base + '#' + encoded;
+}
+
+function openShare() {
+  playPop(500, 0.15);
+  state.shareURL = buildShareURL();
+  document.getElementById('share-url-text').textContent = state.shareURL;
+  openModal('share-modal');
+}
+
+function doWhatsApp() {
+  playSparkle();
+  var msg = '💌 I wrote you a special letter... open it here (you will need our secret code):\n\n' + state.shareURL;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function copyURL() {
+  var url = state.shareURL;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url)
+      .then(function() { playDing(); toast('Link copied! 📋'); closeModal('share-modal'); })
+      .catch(function() { fallbackCopy(url); });
+  } else {
+    fallbackCopy(url);
+  }
+}
+
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.top = '0';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); toast('Link copied! 📋'); closeModal('share-modal'); }
+  catch(e) { toast('Please copy the link above manually'); }
+  document.body.removeChild(ta);
+}
+
+/* ============================================================
+   MODALS (author login + share)
+============================================================ */
+function openModal(id) {
+  var el = document.getElementById(id);
+  el.style.display = 'flex';
+}
+function closeModal(id) {
+  var el = document.getElementById(id);
+  el.style.display = 'none';
+}
+
+/* ============================================================
+   INIT — decide which page to show on load
+============================================================ */
+(function init() {
+  /* set up emoji bar placeholder text for edit area */
+  var area = document.getElementById('edit-area');
+  if (!area.textContent.trim()) {
+    area.innerHTML = '';
+  }
+
+  if (state.isReceiver) {
+    /* Shared link — go straight to lock screen */
+    showPage('page-lock');
+    setTimeout(function() { document.getElementById('lock-input').focus(); }, 300);
+  } else {
+    /* Author — show home */
+    showPage('page-home');
+  }
+}());
+
+</script>
+</body>
+</html>
